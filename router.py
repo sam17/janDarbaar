@@ -74,5 +74,7 @@ def RoutesArr():
     ]
     # need to add stuff to routesArr.
     routesArr.append(('/post_complaint', complaints.HandleNewComplaint))
+    routesArr.append(('/upvote', complaints.HandleUpvote))
+    
     return routesArr
 
