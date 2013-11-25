@@ -513,15 +513,15 @@
 		        }
 		        var content = CKEDITOR.instances.editorContent.getData();
 		        // alert(content);
-		        // if(content == "" || content.length < 150){
-		        // 	$('.alert-row').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Alert! </strong> Complaint description is too short</div>');
-		        // 	return;
-		        // }
+		        if(content == "" || content.length < 150){
+		        	$('.alert-row').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Alert! </strong> Complaint description is too short</div>');
+		        	return;
+		        }
 
-				// if(tags == []){
-		  //       	$('.alert-row').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Alert! </strong> Please specify the category of the complaint</div>');
-		  //       	return;
-		  //       }
+				if(tags == []){
+		        	$('.alert-row').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Alert! </strong> Please specify the category of the complaint</div>');
+		        	return;
+		        }
 
 		        if(evtData == null){
 		        	$('.alert-row').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Alert! </strong> Please provide some pictures.</div>');

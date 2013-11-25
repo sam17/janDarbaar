@@ -19,11 +19,6 @@ class HandleNewComplaint(webapp2.RequestHandler):
     #   self.redirect(users.create_login_url(self.request.uri))
     # i don't think we need to user_id from the frontend anymore.
 
-
-    # google_id = self.request.get('user_id') # this is google id
-    # newuser = models.User(id=google_id, name="arpit", email="arpitemail", google_id=int(google_id));
-    # newuser.put();
-
     google_id = self.request.get('user_id');  # this is google id
     # checking if user already exists
     q = ndb.gql('SELECT * FROM User WHERE google_id = :1', google_id)
