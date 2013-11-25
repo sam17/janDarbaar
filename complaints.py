@@ -76,29 +76,28 @@ class HandleUpvote(webapp2.RequestHandler):
     q[0].voted_set.append(complaint_id)
     q.put()
 
-
-    #### Reporting abuse a complaint
-    # user_id = self.request.get('user_id')
-    # q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-    # userkey = ndb.get_key()
-    # if not len(q): #need to create new user
-    #   name = self.request.get('name')
-    #   email = self.request.get('email')
-    #   newuser = models.User(id=user_id, name=name, email=email, google_id=user_id)
-    #   newuser.put()
-    #
+class HandleReport(webapp2.RequestHandler):
+    def get(self):
+        #### Reporting abuse a complaint
+        user_id = self.request.get('user_id')
+        q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+        userkey = ndb.get_key()
+        if not len(q): #need to create new user
+            name = self.request.get('name')
+            email = self.request.get('email')
+            newuser = models.User(id=user_id, name=name, email=email, google_id=user_id)
+            newuser.put()
     #### Why the statement userkey = newuser
-    #
-    # complaint_id = self.request.get('complaint_id')
-    # q = ndb.gql('SELECT * FROM Complaint WHERE id = :1', complaint_id)
-    # if not len(q):
+        complaint_id = self.request.get('complaint_id')
+        q = ndb.gql('SELECT * FROM Complaint WHERE id = :1', complaint_id)
+        if not len(q):
     #   Throw error saying complaint id doesn't exist
-    # q[0].abuse_reports +=1
-    # q.put() 
+            q[0].abuse_reports +=1
+            q.put() 
     #
-    # q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-    # q[0].abused_set.append(complaint_id)
-    # q.put()
+        q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+        q[0].abused_set.append(complaint_id)
+        q.put()
 
 
 
