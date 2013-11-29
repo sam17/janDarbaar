@@ -30,6 +30,7 @@ class Complaint(ndb.Model):
   date = ndb.DateProperty(auto_now_add=True);
   votes = ndb.IntegerProperty(default=0);
   content = ndb.TextProperty();
+  small_content = ndb.TextProperty();
   tags = ndb.StringProperty(repeated=True); # the tags eg, Civil, Roadworks, etc. They are strings, user is allowed to add their own
   fb_share = ndb.IntegerProperty(default=0);
   gp_share = ndb.IntegerProperty(default=0);

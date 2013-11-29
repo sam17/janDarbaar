@@ -6,7 +6,7 @@ import jinja2
 import complaints
 
 from google.appengine.api import users
-
+from google.appengine.ext import ndb
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
@@ -24,9 +24,9 @@ class MainHandler(webapp2.RequestHandler):
 
 class BrowsePageHandler(webapp2.RequestHandler):
   def get(self):
-
+    q = ndb.gql('SELECT * FROM Complaint');
     template_values = {
-      
+      'q': q
     }
     template = JINJA_ENVIRONMENT.get_template('browse.php')
     self.response.write(template.render(template_values))

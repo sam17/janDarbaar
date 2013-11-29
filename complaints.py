@@ -38,12 +38,13 @@ class HandleNewComplaint(webapp2.RequestHandler):
     lon = float(self.request.get('lon'))
     subtitle = self.request.get('subtitle')
     content = self.request.get('content')
+    small_content = content[0:30]; # first 39 chars
     tags = json.loads(self.request.get('tags'))
     img_links = json.loads(self.request.get('img_links'))
 
     #### Added New
     location = ndb.GeoPt(lat=lat, lon=lon)
-    newcomplaint = models.Complaint(user_id=userKey, title=title, location=location, subtitle=subtitle, content=content, tags=tags, img_links=img_links)
+    newcomplaint = models.Complaint(user_id=userKey, title=title, location=location, subtitle=subtitle, content=content, small_content=small_content, tags=tags, img_links=img_links)
     newcomplaint.put()
 
 class HandleUpvote(webapp2.RequestHandler):

@@ -370,19 +370,57 @@
 	    console.log('Sign-in state: ' + authResult['error']);
 	  }
 	}
-
+	// $.ajax({
+ //    type: 'GET',
+ //    url: '/browse_data',
+ //    async: false,
+ //    dataType: 'html',
+ //    success: function(result) {
+ //      console.log(result);
+ //    },
+ //    error: function(e) {
+ //      console.log('error');
+ //    }
+	// });
 	$(function(){
-		for (var i = 0; i < 5; i++) {
-			$('.center').append('<div class="thumb water"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-danger">Details</a></p></div></div>');
-		};
+		{% for complaint in q %}
+			$('.center').append('<div class="thumb {{" ".join(complaint.tags)}}">\
+				<div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee">\
+				<img width="221" height="170" src={{complaint.img_links[0]}}>\
+				</div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;\
+				background: #ddd;">{{complaint.title}}</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">\
+				{{complaint.subtitle}}</p>\
+				</div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;">\
+				<span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background:\
+				#eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom"\
+				title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg">\
+				</i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" \
+				data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" \
+				class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-danger">Details</a></p></div></div>');
+		{% endfor %}
+		// for (var i = 0; i < 5; i++) {
+		// 	$('.center').append('<div class="thumb water">\
+		// 		<div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee">\
+		// 		<img width="221" height="170" src="img/problem_1.jpg">\
+		// 		</div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;\
+		// 		background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">\
+		// 		Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p>\
+		// 		</div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;">\
+		// 		<span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background:\
+		// 		#eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom"\
+		// 		title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg">\
+		// 		</i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" \
+		// 		data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" \
+		// 		class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-danger">Details</a></p></div></div>');
+		// };
 
-		for (var i = 0; i < 6; i++) {
-			$('.center').append('<div class="thumb electricity"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-info">Details</a></p></div></div>');
-		};
+		// for (var i = 0; i < 6; i++) {
+		// 	$('.center').append('<div class="thumb electricity"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-info">Details</a></p></div></div>');
+		// };
 
-		for (var i = 0; i < 14; i++) {
-			$('.center').append('<div class="thumb transportation"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-primary">Details</a></p></div></div>');
-		};
+		// for (var i = 0; i < 14; i++) {
+		// 	$('.center').append('<div class="thumb transportation"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-primary">Details</a></p></div></div>');
+		// };
 
 		var $container = $('.center');
 	    $container.isotope({
