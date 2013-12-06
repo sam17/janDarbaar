@@ -12,6 +12,7 @@ class Tag(ndb.Model):
 class User(ndb.Model):
   email = ndb.StringProperty(required=True);
   name = ndb.StringProperty(required=True);
+  pic = ndb.StringProperty();
   google_id = ndb.StringProperty(required=True); #this is the user id sent by frontend
   mycomplaint_set = ndb.KeyProperty(repeated=True,kind='Complaint');
   follow_set = ndb.KeyProperty(repeated=True,kind='Complaint'); # complaints that the user is following.
@@ -30,8 +31,9 @@ class Complaint(ndb.Model):
   date = ndb.DateProperty(auto_now_add=True);
   votes = ndb.IntegerProperty(default=0);
   content = ndb.TextProperty();
-  small_content = ndb.TextProperty();
   tags = ndb.StringProperty(repeated=True); # the tags eg, Civil, Roadworks, etc. They are strings, user is allowed to add their own
+  smallAdd = ndb.StringProperty();
+  bigAdd = ndb.StringProperty();
   fb_share = ndb.IntegerProperty(default=0);
   gp_share = ndb.IntegerProperty(default=0);
   tw_share = ndb.IntegerProperty(default=0);

@@ -5,8 +5,9 @@ import models
 import jinja2
 import complaints
 
-from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.api import users
+
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
@@ -24,9 +25,13 @@ class MainHandler(webapp2.RequestHandler):
 
 class BrowsePageHandler(webapp2.RequestHandler):
   def get(self):
-    q = ndb.gql('SELECT * FROM Complaint');
+
+    q = ndb.gql('SELECT * FROM Complaint')
+
+    result = q.fetch()
+
     template_values = {
-      'q': q
+      'List' : result
     }
     template = JINJA_ENVIRONMENT.get_template('browse.php')
     self.response.write(template.render(template_values))
@@ -50,8 +55,20 @@ class ComplaintPageHandler(webapp2.RequestHandler):
 
 class DetailsPageHandler(webapp2.RequestHandler):
   def get(self):
-    template_values = {
+    complaint_id = self.request.get('id');
+    c_id = int(complaint_id)
+    q = ndb.gql("SELECT * FROM Complaint WHERE __key__ = KEY('Complaint', :1)", c_id)
+    result = q.get()
+    if result is None:
+        self.response.write(complaint_id+'is not a valid id')
+        return
+    
+    qb = ndb.Key('User', result.user_id.id())
+    resultUser = qb.get()
 
+    template_values = {
+        'complaint': result,
+        'user' : resultUser
     }
     template = JINJA_ENVIRONMENT.get_template('detail.php')
     self.response.write(template.render(template_values))
@@ -69,12 +86,14 @@ def RoutesArr():
         ('/', MainHandler),
         ('/browse', BrowsePageHandler),
         ('/complaint',ComplaintPageHandler),
-        ('/details/[0-9]+',DetailsPageHandler),
+        ('/details/.*',DetailsPageHandler),
         ('/howItWorks',HowItWorksPageHandler)
     ]
     # need to add stuff to routesArr.
     routesArr.append(('/post_complaint', complaints.HandleNewComplaint))
     routesArr.append(('/upvote', complaints.HandleUpvote))
+    routesArr.append(('/report', complaints.HandleReport))
+    
     
     return routesArr
 

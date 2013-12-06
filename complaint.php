@@ -216,7 +216,7 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
               	</button>
-              	<a class="navbar-brand" href="#">janDarbaar</a>
+              	<a class="navbar-brand" href="http://gcdc2013-jan-darbaar.appspot.com/" style="padding: 4;" title="janDarbaar"><img src="/images/jandarbaar-logo.png" style="width: 47;"></a>
             </div>
             <div class="navbar-collapse collapse">
 	            <ul class="nav navbar-nav">
@@ -264,7 +264,7 @@
 		    			<div class="container" id="containerBody">
 		    				<div class="row">
 		    					<h1 style="text-align:center;text-align: center;margin-bottom: 25px;padding-left: 15px;padding-right: 45px;">
-		    						<input type="text" class="form-control input-lg" name="mainTitile" placeholder="Main title of the page">
+		    						<input type="text" class="form-control input-lg tooltiper" data-toggle="tooltip" title="Simple title of the problem" data-placement="bottom" name="mainTitile" placeholder="Main title of the page">
 		    					</h1>
 		    				</div>
 		    				<div class="row detailData">
@@ -277,9 +277,9 @@
 		    						</div>
 		    						<div class="row img-thumbnail">
 								        <div class="content" style="text-align:justify;width:95%;margin: 15px;">
-								        	<h2><input type="text" class="form-control input-lg" name="descTitile" placeholder="Big and descriptive title of this particular problem...."></h2>
+								        	<h2><input type="text" class="form-control input-lg tooltiper" data-toggle="tooltip" title="A long descriptive title of the problem" data-placement="bottom" name="descTitile" placeholder="Big and descriptive title of this particular problem...."></h2>
 								        	<div class="description">
-								        		<textarea id="editorContent"></textarea>
+								        		<textarea id="editorContent">Describe your problem in atmost detail. You can write, paste links to website, mages and videos too.</textarea>
 								        	</div>
 								        </div>
 		    						</div>
@@ -297,7 +297,7 @@
 		    						</div>
 		    						<div class="row">
 								        <div class="prolemDetails">
-								        	<div class="problemlocation  img-thumbnail">
+								        	<div class="problemlocation  img-thumbnail tooltiper" data-toggle="tooltip" title="Select location of problem on the map" data-placement="bottom" >
 								        		<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 								        		<div id="map-canvas"></div>
 								        	</div>
@@ -312,12 +312,12 @@
 		    								<div id="tags_list" style="padding: 20px;text-align: center;width: 300px;">
 
 							          		</div>
-		    								<input type="text" name="tags" class="form-control input-lg typeahead categories" placeholder="Type in the categories" autocomplete="off" >
+		    								<input type="text" name="tags" class="form-control input-lg typeahead categories tooltiper" data-toggle="tooltip" title="Enter the name of categories to which the problem belongs" data-placement="bottom" placeholder="Type in the categories" autocomplete="off" >
 		    							</div>
 		    						</div>
 		    					</div>
 		    				</div>
-		    				<div class="row" style="margin-top:20px;margin-bottom:20px;text-align:center">
+		    				<div class="row submit_row" style="margin-top:20px;margin-bottom:20px;text-align:center">
 		    					<button class="btn btn-danger btn-lg" style="width:40%;margin-bottom:20px;" id="submit_complaint">Submit Complain</button>
 		    				</div>
 		    			</div>
@@ -356,6 +356,7 @@
 			  gapi.client.oauth2.userinfo.get().execute(function(resp) {
 			    // Shows user email
 			    email = resp.email;
+			    $('.owneremail').html(email);
 			  })
 			});
 
@@ -372,6 +373,9 @@
 				        $('#username').append(
 				            $('<p style="display:inline;margin-right:10px;"><img src=\"' + profile.image.url + '\"></p>'));
 				        $('#username').append(profile.displayName);
+				        $('.ownername').html(profile.displayName);
+				        
+				        $('.profileImg').attr('src',profile.image.url);
 				    });
 		        } else if (authResult['error']) {
 		          console.log('There was an error: ' + authResult['error']);			          
@@ -452,12 +456,56 @@
 	              },
 	              'body': multipartRequestBody});
 	          var cb = function(file){
+	          		insertPermission(file.id);
+	          		// updatePermissionStart(file.id, updatePermission);
 	          		 img_links.push(file.webContentLink);
 	               console.log(file);
 	               console.log('just added file name: ' + file.webContentLink);
 	               if(callback)
 	               	callback();	               
 	          };
+
+	          	function insertPermission(fileId) {
+				  var body = {
+				    'type': 'anyone',
+				    'role': 'reader'
+				  };
+				  var request = gapi.client.drive.permissions.insert({
+				    'fileId': fileId,
+				    'resource': body
+				  });
+				  request.execute(function(resp) { console.log(resp); });
+				}
+
+	          	var updatePermissionStart = function(fileId, callback) {
+				  	var request = gapi.client.drive.permissions.list({
+				    	'fileId': fileId
+				  	});
+				  	request.execute(function(resp) {
+				  		console.log(resp);
+				    	callback(fileId, resp.items[0].id, "reader");
+				  	});
+				}
+
+				var updatePermission = function(fileId, permissionId, newRole) {
+				  // First retrieve the permission from the API.
+				  console.log('up '+fileId+'  '+permissionId+'  '+newRole);
+				  var request = gapi.client.drive.permissions.get({
+				    'fileId': fileId,
+				    'permissionId': permissionId
+				  });
+				  request.execute(function(resp) {
+				    resp.role = newRole;
+				    resp.type = 'anyone';
+				    var updateRequest = gapi.client.drive.permissions.update({
+				      'fileId': fileId,
+				      'permissionId': permissionId,
+				      'resource': resp
+				    });
+				    console.log(resp);
+				    updateRequest.execute(function(resp) { console.log(resp); });
+				  });
+				}
 	          request.execute(cb);
 	          // if (!callback) {
 	          //   callback = function(file) {
@@ -470,6 +518,8 @@
 	      }
 
 		$(function(){
+
+			$('.tooltiper').tooltip();
 
 			$(window).load(function(){
 	            $(".navList").mCustomScrollbar({
@@ -484,6 +534,7 @@
 	        });
 
 	        var positionLL = "";
+	        var addBig, addSmall;
 	        var tags = [],tag;
 
 	        $(document).keypress(function(e) {
@@ -495,6 +546,10 @@
 			});
 
 	        $('#submit_complaint').click(function () {
+
+	        	$('#submit_complaint').hide();
+
+	        	$('.submit_row').append('Please wait while we process your complaint.');
 
 		        var title = $('input[name="mainTitile"]').val();
 		        // if(title == ""){
@@ -532,16 +587,21 @@
 			        var img_links_json = JSON.stringify(img_links);
 		        	// var loc = [location.ob, location.pb]
 		        	$.ajax({
-				        type: 'GET',
+				        type: 'POST',
 				        url: '/post_complaint',
 				        async: false,
 				        dataType: 'html',
-				        data: { email:email, name: user.displayName, user_id:user.id, title: title, lat: location.ob, lon: location.pb, subtitle: sub_title, content: content, tags: tags_json, img_links: img_links_json },
+				        data: { pic: user.image.url, email:email, name: user.displayName, user_id:user.id, title: title, lat: location.ob, lon: location.pb, subtitle: sub_title, content: content, tags: tags_json, img_links: img_links_json, smallAdd: addSmall, bigAdd: addBig },
 				        success: function(result) {
 				          console.log(result);
+				          $('.alert-row').html('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Success! </strong> You have successfully submitted the complaint.</div>');
+				          $('.submit_row').html('Success');
 				        },
 				        error: function(e) {
-				          console.log('error');
+				          console.log(e);
+				          console.log(email+" : "+user.displayName)
+				          $('.alert-row').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Abort! </strong> Sorry there were issues trying to process your request.</div>');
+				          $('.submit_row').html('<button class="btn btn-danger btn-lg" style="width:40%;margin-bottom:20px;" id="submit_complaint">Submit Complain</button>');
 				        }
 				    	});
 		        });
@@ -579,6 +639,8 @@
 			function loadMap() {
 			  	var myLatlng = new google.maps.LatLng(-34.397, 150.644);
 			  	var markers = [];
+			  	var geocoder;
+			  	geocoder = new google.maps.Geocoder();
 			  	var mapOptions = {
 			    	zoom: 8,
 			    	mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -608,7 +670,22 @@
 					marker.setMap(null);
 				    marker = new google.maps.Marker({position: event.latLng, map: map});
 				    positionLL = event.latLng;
-				    
+				    geocoder.geocode({'latLng': event.latLng}, function(results, status) {
+				      if (status == google.maps.GeocoderStatus.OK) {
+				        if (results[0]) {
+				        	addBig = results[0].formatted_address;
+				        }else if(results[1]){
+				        	addBig = results[1].formatted_address;
+				        }
+				        if(results[5]){
+				        	addSmall = results[5].formatted_address;
+				        }else if(results[6]){
+				        	addSmall = results[6].formatted_address;
+				        }
+				      } else {
+				        alert("Geocoder failed due to: " + status);
+				      }
+				    });
 				});
 
 				google.maps.event.addListener(searchBox, 'places_changed', function() {

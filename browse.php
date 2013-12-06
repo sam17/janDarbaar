@@ -202,7 +202,7 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
               	</button>
-              	<a class="navbar-brand" href="#">janDarbaar</a>
+              	<a class="navbar-brand" href="http://gcdc2013-jan-darbaar.appspot.com/" style="padding: 4;" title="janDarbaar"><img src="/images/jandarbaar-logo.png" style="width: 47;"></a>
             </div>
             <div class="navbar-collapse collapse">
 	            <ul class="nav navbar-nav">
@@ -238,44 +238,44 @@
 		    			<li class="tags" tag-val="*">
 		    				<span>All</span><span class="num-tag label label-primary">116</span>
 		    			</li>
-		    			<li class="tags" tag-val=".water">
+		    			<li class="tags" tag-val=".Water">
 		    				<span>Water</span><span class="num-tag label label-primary">26</span>
 		    			</li>
-		    			<li class="tags" tag-val=".electricity">
+		    			<li class="tags" tag-val=".Electricity">
 		    				<span>Electricity</span><span class="num-tag label label-primary">66</span>
 		    			</li>
-		    			<li class="tags" tag-val=".transportation">
+		    			<li class="tags" tag-val=".Transportation">
 		    				<span>Transportation</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".telecom">
+		    			<li class="tags" tag-val=".Telecom">
 		    				<span>Telecom</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".sanitation">
+		    			<li class="tags" tag-val=".Sanitation">
 		    				<span>Sanitation</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".recreation">
+		    			<li class="tags" tag-val=".Recreation">
 		    				<span>Recreational Facility</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".civicAdministration">
+		    			<li class="tags" tag-val=".CivicAdministration">
 		    				<span>Civic Administration</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".judicial">
+		    			<li class="tags" tag-val=".Judicial">
 		    				<span>Judicial</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".police">
+		    			<li class="tags" tag-val=".Police">
 		    				<span>Police</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".municipal">
+		    			<li class="tags" tag-val=".Municipal">
 		    				<span>Municipality</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".healthAndMedicine">
+		    			<li class="tags" tag-val=".HealthAndMedicine">
 		    				<span>Health and Medicine</span><span class="num-tag label label-primary">40</span>
 		    			</li>
-		    			<li class="tags" tag-val=".food">
+		    			<li class="tags" tag-val=".Food">
 		    				<span>Food</span><span class="num-tag label label-primary">40</span>
 		    			</li>
 		    		</ul>
-		    		<div class="row" style="margin-top: 20px;">
+		    		<!-- <div class="row" style="margin-top: 20px;">
 			    		<div class="panel panel-primary">
 				        	<div class="panel-heading">
 				          		<h3 class="panel-title" style="margin-left:10px;">Description</h3>
@@ -293,14 +293,50 @@
 				          		</div>
 				        	</div>
 				      	</div>
-		    		</div>
+		    		</div> -->
 		    	</div>
 	    		<div class="middle col-xs-10 col-md-9 col-lg-9">
 	    			<div class="row">
 	    				<div class="col-xs-1 col-md-1 col-lg-1"></div>
 	    				<div class="middleInner col-xs-10 col-md-10 col-lg-10">
 				    		<div class="center">
-						        
+						        {% for ListItem in List %}
+						        	<div class="thumb {% for tag in ListItem.tags %}{{ tag }}{% endfor %}">
+						        		<div class="thumbnail">
+						        			<div style="width: 100%; height: 170px;background:#eee">
+						        				<img width="221" height="170" src="{{ ListItem.img_links[0] }}">
+						        			</div>
+						        			<h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">
+						        				{{ ListItem.title }}
+						        			</h3>
+						        			<div class="caption" data="{% if ListItem.content|length > 200 %}{{ ListItem.content[3:200]+ '...' }}{% else %}{{ ListItem.content[3:] }}{% endif %}">
+						        				<p style="font-size: 12px;text-align: justify;">
+						        					{% if ListItem.content|length > 100 %}
+						        						{{ ListItem.content[3:75]+ '...' }}
+						        					{% else %}
+						        						{{ ListItem.content[3:] }}
+						        					{% endif %}
+						        				</p>
+						        			</div>
+						        			<p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;">
+						        				<span class="fa fa-map-marker" style="margin-right: 7px;"></span>
+						        				 {{ ListItem.smallAdd }}
+						        			</p>
+						        			<p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;">
+						        				<a target="_blank" data-toggle="tooltip" title="Share on Facebook" data-placement="bottom" href="http://www.facebook.com/sharer.php?u=http://gcdc2013-jan-darbaar.appspot.com/details/?id={{ ListItem.key.id() }}" class="btn btn-facebook tooltiper" catid="{{ ListItem.key.id() }}" role="button">
+						        					<i class="fa fa-facebook fa-lg"></i>
+						        				</a>
+						        				<a target="_blank" data-toggle="tooltip" title="Share on Google+" data-placement="bottom" href="https://plus.google.com/share?url=http://gcdc2013-jan-darbaar.appspot.com/details/?id={{ ListItem.key.id() }}" class="btn btn-google tooltiper" catid="{{ ListItem.key.id() }}" role="button">
+						        					<i class="fa fa-google-plus fa-lg"></i>
+						        				</a>
+						        				<a href="#" data-toggle="tooltip" title="Click to Vote" data-placement="bottom" class="btn btn-vote upvote_button tooltiper" role="button" catid="{{ ListItem.key.id() }}">
+						        					<i class="fa fa-thumbs-up fa-lg"></i>
+						        				</a>
+						        				<a class="btn btn-danger" target="_blank" href="/details/?id={{ ListItem.key.id() }}">Details</a>
+						        			</p>
+						        		</div>
+						        	</div>
+							    {% endfor %}
 					      	</div>
 	    				</div>
 	    			</div>
@@ -322,105 +358,65 @@
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(po, s);
 	
-	function signinCallback(authResult) {
-	  
-	  var email_id;
-	  
-	  if (authResult['access_token']) {
-	    // Update the app to reflect a signed in user
-	    // Hide the sign-in button now that the user is authorized, for example:
-	    document.getElementById('signinButton').setAttribute('style', 'display: none');
+	var email, user;
 
-	    gapi.client.load('oauth2', 'v2', function() {
-		  gapi.client.oauth2.userinfo.get().execute(function(resp) {
-		    // Shows user email
-		    email_id = resp.email;
-		  })
-		});
-	    
-		gapi.client.load('plus','v1', function(){
-	        if (authResult['access_token']) {
-			    var request = gapi.client.plus.people.get( {'userId' : 'me'} );
-			    request.execute( function(profile) {
-			        if (profile.error) {
-			          alert(profile.error);
-			          return;
-			        }
-			        // console.log(profile);
-			        $('#user').show();
-			        $('#username').append(
-			            $('<p style="display:inline;margin-right:10px;"><img src=\"' + profile.image.url + '\"></p>'));
-			        $('#username').append(profile.displayName);
-			    });
-	        } else if (authResult['error']) {
-	          // There was an error, which means the user is not signed in.
-	          // As an example, you can handle by writing to the console:
-	          console.log('There was an error: ' + authResult['error']);
-	          
-	        }
-	        console.log('authResult', authResult);
-      	});
+		function signinCallback(authResult) {
+		  if (authResult['access_token']) {
 
-	  } else if (authResult['error']) {
-	    // Update the app to reflect a signed out user
-	    // Possible error values:
-	    //   "user_signed_out" - User is signed-out
-	    //   "access_denied" - User denied access to your app
-	    //   "immediate_failed" - Could not automatically log in the user
-	    console.log('Sign-in state: ' + authResult['error']);
-	  }
-	}
-	// $.ajax({
- //    type: 'GET',
- //    url: '/browse_data',
- //    async: false,
- //    dataType: 'html',
- //    success: function(result) {
- //      console.log(result);
- //    },
- //    error: function(e) {
- //      console.log('error');
- //    }
-	// });
+		    document.getElementById('signinButton').setAttribute('style', 'display: none');
+		    
+		    gapi.client.load('oauth2', 'v2', function() {
+			  gapi.client.oauth2.userinfo.get().execute(function(resp) {
+			    // Shows user email
+			    email = resp.email;
+			  })
+			});
+
+			gapi.client.load('plus','v1', function(){
+		        if (authResult['access_token']) {
+				    var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+				    request.execute( function(profile) {
+				        if (profile.error) {
+				          alert(profile.error);
+				          return;
+				        }
+				        user = profile;
+				        $('#user').show();
+				        $('#username').append(
+				            $('<p style="display:inline;margin-right:10px;"><img src=\"' + profile.image.url + '\"></p>'));
+				        $('#username').append(profile.displayName);
+				    });
+		        } else if (authResult['error']) {
+		          console.log('There was an error: ' + authResult['error']);			          
+		        }
+		        console.log('authResult', authResult);
+	      	});
+
+		  } else if (authResult['error']) {
+		    console.log('Sign-in state: ' + authResult['error']);
+		  }
+		}
+
 	$(function(){
-		{% for complaint in q %}
-			$('.center').append('<div class="thumb {{" ".join(complaint.tags)}}">\
-				<div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee">\
-				<img width="221" height="170" src={{complaint.img_links[0]}}>\
-				</div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;\
-				background: #ddd;">{{complaint.title}}</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">\
-				{{complaint.subtitle}}</p>\
-				</div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;">\
-				<span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background:\
-				#eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom"\
-				title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg">\
-				</i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" \
-				data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" \
-				class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-danger">Details</a></p></div></div>');
-		{% endfor %}
-		// for (var i = 0; i < 5; i++) {
-		// 	$('.center').append('<div class="thumb water">\
-		// 		<div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee">\
-		// 		<img width="221" height="170" src="img/problem_1.jpg">\
-		// 		</div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;\
-		// 		background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">\
-		// 		Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p>\
-		// 		</div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;">\
-		// 		<span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background:\
-		// 		#eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom"\
-		// 		title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg">\
-		// 		</i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" \
-		// 		data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" \
-		// 		class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-danger">Details</a></p></div></div>');
-		// };
 
-		// for (var i = 0; i < 6; i++) {
-		// 	$('.center').append('<div class="thumb electricity"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-info">Details</a></p></div></div>');
-		// };
+		$('.tooltiper').tooltip();
 
-		// for (var i = 0; i < 14; i++) {
-		// 	$('.center').append('<div class="thumb transportation"><div class="thumbnail"><div style="width: 100%; height: 170px;background:#eee"><img width="221" height="170" src="img/problem_1.jpg"></div><h3 style="text-align:center;font-size:21px;padding-bottom: 7px;padding-top: 7px;margin: 0px;width: 100%;background: #ddd;">Main Title</h3><div class="caption"><p style="font-size: 12px;text-align: justify;">Description of the problem in breif. This will be a small portion of the total problem, just like a small description.....</p></div><p style="color: #aaa;text-align: left;margin-left: 9px;margin-bottom: 11px;font-family: lato;"><span class="fa fa-map-marker" style="margin-right: 7px;"></span> Kharagpur, India</p><p class="social_buttons" style="background: #eee;margin: 0px;padding: 4;"><a href="#" class="btn btn-facebook" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Facebook" cat_id="#" role="button"><i class="fa fa-facebook fa-lg"></i></a><a href="#" class="btn btn-google" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Share on Google+" cat_id="#" role="button"><i class="fa fa-google-plus fa-lg"></i></a><a href="#" class="btn btn-vote" role="button"><i class="fa fa-thumbs-up fa-lg"></i></a><a class="btn btn-primary">Details</a></p></div></div>');
-		// };
+		$('.upvote_button').click( function(){
+			var catid = $(this).attr('catid');
+			$.ajax({
+		        type: 'GET',
+		        url: '/upvote',
+		        async: false,
+		        dataType: 'html',
+		        data: { email:email, name: user.displayName, user_id:user.id, complaint_id: catid, pic: user.image.url },
+		        success: function(result) {
+		          console.log(result);
+		        },
+		        error: function(e) {
+		          console.log(e);
+		        }
+	    	});
+		});
 
 		var $container = $('.center');
 	    $container.isotope({

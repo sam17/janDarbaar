@@ -9,7 +9,7 @@ from google.appengine.api import users
 
 #get req for a new complaint
 class HandleNewComplaint(webapp2.RequestHandler):
-  def get(self):    
+  def post(self):    
     #checking if user is logged in or not. If not, request is not served and 
     # instead redirected to login page, then req sent again.
     # Generally this shouldnt be the case since the guy was asked to 
@@ -23,10 +23,11 @@ class HandleNewComplaint(webapp2.RequestHandler):
     # checking if user already exists
     q = ndb.gql('SELECT * FROM User WHERE google_id = :1', google_id)
     user = q.get() # returns first result or None
-    if user == None: #need to create new user
+    if user is None: #need to create new user
       name = self.request.get('name')
       email = self.request.get('email')
-      newuser = models.User(id=google_id, name=name, email=email, google_id=google_id)
+      pic = self.request.get('pic')
+      newuser = models.User(id=google_id, name=name, email=email, google_id=google_id, pic=pic)
       newuser.put()
       userKey = newuser.key
       print ">>>>> New user created."
@@ -38,63 +39,68 @@ class HandleNewComplaint(webapp2.RequestHandler):
     lon = float(self.request.get('lon'))
     subtitle = self.request.get('subtitle')
     content = self.request.get('content')
-    small_content = content[0:30]; # first 39 chars
     tags = json.loads(self.request.get('tags'))
     img_links = json.loads(self.request.get('img_links'))
+    smallAdd = self.request.get('smallAdd')
+    bigAdd = self.request.get('bigAdd')
 
     #### Added New
     location = ndb.GeoPt(lat=lat, lon=lon)
-    newcomplaint = models.Complaint(user_id=userKey, title=title, location=location, subtitle=subtitle, content=content, small_content=small_content, tags=tags, img_links=img_links)
+    newcomplaint = models.Complaint(user_id=userKey, title=title, location=location, subtitle=subtitle, content=content, tags=tags, img_links=img_links, bigAdd=bigAdd, smallAdd=smallAdd)
     newcomplaint.put()
 
 class HandleUpvote(webapp2.RequestHandler):
   def get(self):    
     #### For upvoting complaints 
     user_id = self.request.get('user_id')
-    q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-    userkey = ndb.get_key()
-    if not len(q): #need to create new user
+    qa = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+    userResult = qa.get()
+    if userResult is None: #need to create new user
         name = self.request.get('name')
         email = self.request.get('email')
-        newuser = models.User(id=user_id, name=name, email=email, google_id=user_id)
+        pic = self.request.get('pic')
+        newuser = models.User(id=google_id, name=name, email=email, google_id=google_id, pic=pic)
         newuser.put()
     #
     # ### Why the statement userkey = newuser
     #
     complaint_id = self.request.get('complaint_id')
-    q = ndb.gql('SELECT * FROM Complaint WHERE id = :1', complaint_id)
-    if not len(q):
-    # # Throw error saying complaint id doesn't exist
-        q[0].votes +=1
-        q.put()
+    c_id = int(complaint_id)
+    qb = ndb.Key('Complaint', c_id)
+    complaintResult = qb.get()   
+
+    complaintResult.votes +=1
+    complaintResult.put()
     #
-    q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-    q[0].voted_set.append(complaint_id)
-    q.put()
+    qc = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+    userResult = qc.get()
+    userResult.voted_set.append( qb )
+    userResult.put()
 
 class HandleReport(webapp2.RequestHandler):
     def get(self):
         #### Reporting abuse a complaint
         user_id = self.request.get('user_id')
-        q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-        userkey = ndb.get_key()
-        if not len(q): #need to create new user
+        qa = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+        userResult = qa.get()
+        if userResult is None: #need to create new user
             name = self.request.get('name')
             email = self.request.get('email')
-            newuser = models.User(id=user_id, name=name, email=email, google_id=user_id)
+            pic = self.request.get('pic')
+            newuser = models.User(id=google_id, name=name, email=email, google_id=google_id, pic=pic)
             newuser.put()
     #### Why the statement userkey = newuser
         complaint_id = self.request.get('complaint_id')
-        q = ndb.gql('SELECT * FROM Complaint WHERE id = :1', complaint_id)
-        if not len(q):
-    #   Throw error saying complaint id doesn't exist
-            q[0].abuse_reports +=1
-            q.put() 
-    #
-        q = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
-        q[0].abused_set.append(complaint_id)
-        q.put()
-
+        c_id = int(complaint_id)
+        qb = ndb.Key('Complaint', c_id)
+        complaintResult = qb.get()   
+        complaintResult.abuse_reports +=1
+        complaintResult.put()
+        
+        qc = ndb.gql('SELECT * FROM User WHERE google_id = :1', user_id)
+        userResult = qc.get()
+        userResult.abused_set.append( qb )
+        userResult.put()
 
 
 

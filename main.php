@@ -102,7 +102,7 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
               	</button>
-              	<a class="navbar-brand" href="#">janDarbaar</a>
+              	<a class="navbar-brand" href="http://gcdc2013-jan-darbaar.appspot.com/" style="padding: 4;" title="janDarbaar"><img src="/images/jandarbaar-logo.png" style="width: 47;"></a>
             </div>
             <div class="navbar-collapse collapse">
 	            <ul class="nav navbar-nav">
